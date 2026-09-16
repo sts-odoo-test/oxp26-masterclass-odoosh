@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_conference_session_tree" model="ir.ui.view">
+        <field name="name">conference.session.tree</field>
+        <field name="model">conference.session</field>
+        <field name="arch" type="xml">
+            <tree string="Sessions">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="speaker"/>
+                <field name="duration"/>
+                <field name="room"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_conference_session_form" model="ir.ui.view">
+        <field name="name">conference.session.form</field>
+        <field name="model">conference.session</field>
+        <field name="arch" type="xml">
+            <form string="Session">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="speaker"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="duration"/>
+                            <field name="room"/>
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="Additional notes..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_conference_session" model="ir.actions.act_window">
+        <field name="name">Sessions</field>
+        <field name="res_model">conference.session</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_conference_root"
+              name="Conference"
+              sequence="50"/>
+
+    <menuitem id="menu_conference_session"
+              name="Sessions"
+              parent="menu_conference_root"
+              action="action_conference_session"
+              sequence="10"/>
+
+</odoo>
