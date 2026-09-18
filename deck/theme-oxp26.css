@@ -1,0 +1,444 @@
+/* ============================================================
+   theme-oxp26.css — a reveal.js theme reproducing the look of
+   ged-odoo/masterclass-js-2026's "gas" framework, oxp26 palette:
+   colors and fonts are copied 1:1 from gas/assets/palettes/oxp26.css
+   and gas/assets/style.css (both sampled from Odoo Experience 2026's
+   own speaker template). Component classes (.rows, .slide-head, …)
+   are a fresh, from-scratch implementation of the same visual
+   vocabulary — reveal.js has no equivalent built in, and this deck
+   does not depend on gas/ at all.
+   ============================================================ */
+
+@font-face {
+  font-family: "Caveat";
+  src: url("fonts/caveat-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/geist-variable.woff2") format("woff2");
+  font-weight: 300 800;
+  font-display: swap;
+}
+
+/* ---------- tokens: oxp26 palette, light first ---------- */
+
+:root {
+  --bg: #f3f4f6;
+  --panel: #ffffff;
+  --card: var(--panel);
+  --text: #1c1d21;
+  --muted: #6b7078;
+  --border: #e4e5e8;
+  --accent: #8d3b71;
+  --accent-soft: #f6eff4;
+  --accent-light: #ceabc2;
+  --pink: #ff70a6;
+  --cyan: #03f9e3;
+  --yellow: #ffd433;
+  --lavender: #bb86fc;
+  --code-bg: #1e1f22;
+  --code-text: #e7e3e6;
+
+  --ink: var(--text);
+  --ink-2: color-mix(in srgb, var(--text) 60%, var(--muted) 40%);
+  --quiet: var(--muted);
+  --line: var(--border);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #21272b;
+    --panel: #2a3136;
+    --card: var(--panel);
+    --text: #e7e3e6;
+    --muted: #9a9ba0;
+    --border: #3a4045;
+    --accent: #bb86fc;
+    --accent-soft: #483f5f;
+    --accent-light: #d6b6fd;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #21272b;
+  --panel: #2a3136;
+  --card: var(--panel);
+  --text: #e7e3e6;
+  --muted: #9a9ba0;
+  --border: #3a4045;
+  --accent: #bb86fc;
+  --accent-soft: #483f5f;
+  --accent-light: #d6b6fd;
+}
+
+/* ---------- page + slide surface ---------- */
+
+html, body {
+  background: var(--bg);
+}
+
+.reveal {
+  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.reveal .slides section {
+  text-align: left;
+  background: var(--panel);
+  color: var(--ink);
+  padding: 56px 64px;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+
+.reveal .slides { text-align: left; }
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  text-transform: none;
+  font-family: inherit;
+  margin: 0;
+}
+
+/* ---------- theme toggle (top-right, mirrors gas's own) ---------- */
+
+#theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--panel);
+  color: var(--quiet);
+  cursor: pointer;
+}
+
+#theme-toggle svg { width: 14px; height: 14px; }
+#theme-toggle .icon-moon { display: none; }
+:root[data-theme="dark"] #theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] #theme-toggle .icon-moon { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #theme-toggle .icon-sun { display: none; }
+  :root:not([data-theme="light"]) #theme-toggle .icon-moon { display: block; }
+}
+
+/* ---------- the head: eyebrow, title, lead ---------- */
+
+.slide-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+
+.eyebrow {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.reveal .slides section h2 {
+  font-family: "Caveat", ui-rounded, cursive;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.lead { margin: 0; max-width: 74%; font-size: 19px; line-height: 1.5; color: var(--ink-2); }
+
+/* ---------- body + foot ---------- */
+
+.slide-body { flex: 1; }
+
+.slide-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 36px;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--quiet);
+  font-size: 14px;
+}
+
+.slide-foot p { margin: 0; }
+.slide-foot .k { margin-right: 8px; color: var(--accent); font-weight: 600; }
+.slide-foot code { color: var(--ink); background: none; padding: 0; overflow-wrap: anywhere; }
+
+/* ---------- rows: the workhorse component ---------- */
+
+.rows { --key: 220px; list-style: none; margin: 0; padding: 0; }
+.rows + .rows { margin-top: 32px; }
+
+.rows li {
+  display: grid;
+  grid-template-columns: var(--key) 1fr;
+  align-items: baseline;
+  column-gap: 28px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.rows li:first-child { border-top: 0; }
+.rows .key { font-weight: 600; color: var(--ink); }
+.rows .key code { font-size: 0.9em; }
+.rows p { margin: 0; }
+
+.rows.wide-key { --key: 300px; }
+
+.rows.numbered li { grid-template-columns: 48px 280px 1fr; }
+.rows.numbered .num {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.rows.numbered h3 { margin: 0 0 4px; font-size: 19px; font-weight: 600; }
+.rows.numbered p { color: var(--ink-2); font-size: 15px; max-width: 46ch; }
+
+.rows.table { --cols: 1fr 1fr; }
+.rows.table li {
+  grid-template-columns: var(--cols);
+  column-gap: 20px;
+  padding: 11px 0;
+  font-size: 15px;
+}
+.rows.table li.head {
+  border-top: 0;
+  padding: 0 0 10px;
+  color: var(--quiet);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.rows.table .quiet { color: var(--quiet); }
+
+.rows.boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.rows.boxes li {
+  display: block;
+  border-top: 0;
+  padding: 22px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.rows.boxes h3 { margin: 0 0 8px; font-size: 19px; font-weight: 600; }
+.rows.boxes p { margin: 0; color: var(--ink-2); font-size: 15px; }
+
+/* ---------- plain bullet list ---------- */
+
+.notes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.notes li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.notes li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------- screenshots ---------- */
+
+.slide-body figure.shot { margin: 0; text-align: center; }
+.slide-body figure.shot img {
+  max-width: 100%;
+  max-height: 460px;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.2);
+}
+
+/* ---------- two-column layout ---------- */
+
+.two-col { display: grid; grid-template-columns: 1.15fr 1fr; column-gap: 60px; }
+.two-col.even { grid-template-columns: 1fr 1fr; }
+.two-col > section, .two-col > div { min-width: 0; }
+
+.label {
+  display: block;
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--quiet);
+}
+
+/* ---------- code ---------- */
+
+.reveal pre {
+  width: auto;
+  margin: 4px 0;
+  box-shadow: none;
+  border-radius: 8px;
+}
+
+.reveal pre code {
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 8px;
+  padding: 20px 22px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 16px;
+  line-height: 1.55;
+  max-height: none;
+  /* long one-liners (e.g. a full odoo-bin command) shouldn't overflow
+     a narrower column, e.g. a two-col slide */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- divider (act-opener) slides ---------- */
+
+.reveal .slides section.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--text);
+  color: var(--bg);
+}
+
+.divider-body { max-width: 900px; text-align: left; }
+.divider-body .eyebrow { color: var(--accent-light); }
+/* .reveal .slides section.divider (not just .divider-body): needs to
+   out-specificity the general h2 rule above (2 classes + 2 types) to
+   actually win on font-size — a bare ".divider-body h2" (1 class + 1
+   type) loses that fight and silently gets overridden to 40px */
+.reveal .slides section.divider h2 { font-size: 64px; color: #fff; }
+.divider-body .lead { color: rgba(255,255,255,0.72); margin-top: 14px; max-width: 90%; }
+
+.prog { display: flex; gap: 6px; margin-top: 28px; width: 420px; max-width: 60vw; }
+.prog span { height: 5px; flex: 1; border-radius: 3px; background: rgba(255,255,255,0.18); }
+/* --act-color: set inline per divider (e.g. style="--act-color: var(--pink)")
+   so the "on" dot matches that act's own title-underline color instead of
+   one fixed accent for every act */
+.prog span.on { background: var(--act-color, var(--accent-light)); }
+
+/* ---------- title markers ----------
+   Odoo Experience's own speaker-template device: a word or two picked
+   out of a heading, underlined or highlighter-marked in one of the
+   template's 5 swatch colors (see gas/assets/palettes/oxp26.css's own
+   comment: sampled pixel-exact from that template). One color per act,
+   cycling through the 5 - ties every title in an act to that act's own
+   accent, echoed in its divider's progress dot above. */
+
+mark.u {
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.14em;
+  text-decoration-skip-ink: none;
+}
+
+mark.mk {
+  background: var(--mk-color, var(--yellow));
+  color: #1c1d21;
+  font: inherit;
+  padding: 0.02em 0.14em;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+mark.u.c-accent { text-decoration-color: var(--accent); }
+mark.u.c-pink { text-decoration-color: var(--pink); }
+mark.u.c-cyan { text-decoration-color: var(--cyan); }
+mark.u.c-yellow { text-decoration-color: var(--yellow); }
+mark.u.c-lavender { text-decoration-color: var(--lavender); }
+
+mark.mk.c-accent { background: var(--accent); color: #fff; }
+mark.mk.c-pink { background: var(--pink); }
+mark.mk.c-cyan { background: var(--cyan); }
+mark.mk.c-yellow { background: var(--yellow); }
+mark.mk.c-lavender { background: var(--lavender); }
+
+/* ---------- welcome / cover slide ---------- */
+/* background: the Odoo Experience 2026 speaker template's own cover art
+   (images/cover-bg.png, as supplied — includes the odoo/2026/EXPERIENCE
+   mark already). Doodles (ring, sparkle, twinkles, UFO) are a hand-drawn
+   SVG overlay reproducing the template's own sticker set. */
+
+.reveal .slides section.welcome {
+  /* .welcome's only children are position:absolute (the doodle overlay,
+     the content block) — with no in-flow content, an absolutely
+     positioned section's auto height is 0, which also zeroes out the
+     background-image and every child's %-based top/left. Pin it to the
+     the slide's own box explicitly. */
+  position: relative;
+  height: 100%;
+  padding: 0;
+  color: #fff;
+  background: #1b1030 url("images/cover-bg.png") center / cover no-repeat;
+}
+
+.welcome-decor {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.welcome-content {
+  position: absolute;
+  left: 9%;
+  top: 34%;
+  max-width: 56%;
+}
+
+/* .reveal .slides section.welcome (not just .welcome-content): same
+   specificity fix as the divider rule above — needs to out-rank the
+   general h2 rule to keep its own font-size instead of losing it */
+.reveal .slides section.welcome h2 {
+  font-weight: 700;
+  font-size: 76px;
+  line-height: 0.95;
+  color: #fff;
+}
+
+.welcome-content .lead {
+  margin-top: 20px;
+  max-width: 100%;
+  font-size: 18px;
+  color: rgba(255,255,255,0.92);
+}
+
+/* ---------- statement (closing) slide ---------- */
+
+.reveal .slides section.statement {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.statement .slide-head { margin: auto 0; }
+.statement .slide-foot { margin-top: 40px; }

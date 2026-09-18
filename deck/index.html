@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<!-- Odoo.sh Masterclass — Day 2. Built on reveal.js (../reveal/), themed to
+     match ged-odoo/masterclass-js-2026's "gas" framework, oxp26 palette
+     (theme-oxp26.css: colors/fonts copied from gas's own oxp26.css/
+     style.css; component classes are a fresh implementation — this deck
+     has no runtime dependency on gas/ at all).
+     Content sourced from slides.md (script) and plan.md (timing/acts).
+     Flat sequence of top-level slides — ← / → (or space) moves through
+     all of them, including the act-divider slides. Press Esc for the
+     grid overview, ?print-pdf for a PDF export. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odoo.sh Masterclass — Day 2</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11.5' fill='none' stroke='%238d3b71' stroke-width='5'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../reveal/reveal.css">
+<link rel="stylesheet" href="theme-oxp26.css">
+<script>
+(function () {
+  var theme = null;
+  try { theme = localStorage.getItem("deck-theme"); } catch (err) {}
+  if (theme) document.documentElement.dataset.theme = theme;
+})();
+</script>
+</head>
+<body>
+
+<button type="button" id="theme-toggle" title="Switch light/dark" aria-label="Switch light/dark theme">
+  <svg class="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+    <circle cx="8" cy="8" r="3"/>
+    <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M12.8 3.2l-1.4 1.4M4.6 11.4l-1.4 1.4"/>
+  </svg>
+  <svg class="icon-moon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+    <path d="M13.5 8.9A5.6 5.6 0 0 1 6.6 2 6 6 0 1 0 13.5 8.9Z"/>
+  </svg>
+</button>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ============================ COVER ============================ -->
+
+    <section class="welcome">
+      <svg class="welcome-decor" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <path id="spark" d="M 0,-16 C 4,-4 4,-4 16,0 C 4,4 4,4 0,16 C -4,4 -4,4 -16,0 C -4,-4 -4,-4 0,-16 Z"/>
+          <g id="burst">
+            <line x1="0" y1="-7" x2="0" y2="-17" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="0" y1="7" x2="0" y2="17" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>
+            <line x1="-7" y1="0" x2="-17" y2="0" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>
+            <line x1="7" y1="0" x2="17" y2="0" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>
+            <line x1="-5" y1="-5" x2="-11" y2="-11" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.6"/>
+            <line x1="5" y1="-5" x2="11" y2="-11" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.6"/>
+            <line x1="-5" y1="5" x2="-11" y2="11" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.6"/>
+            <line x1="5" y1="5" x2="11" y2="11" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.6"/>
+          </g>
+        </defs>
+
+        <!-- top-left cluster: ring, sparkle-cross, tiny star -->
+        <circle cx="152" cy="106" r="19" fill="none" stroke="#fff" stroke-width="2.5"/>
+        <use href="#spark" transform="translate(267,80) rotate(-8) scale(1.3)" fill="#ff70a6" stroke="#2a1c3d" stroke-width="2"/>
+        <use href="#spark" transform="translate(207,129) scale(0.35)" fill="#fff"/>
+
+        <!-- top-center twinkle -->
+        <use href="#burst" transform="translate(800,60) scale(1.25)"/>
+        <use href="#spark" transform="translate(856,90) scale(0.35)" fill="#fff"/>
+
+        <!-- bottom-left twinkle -->
+        <use href="#spark" transform="translate(93,622) scale(0.4)" fill="#fff"/>
+        <use href="#burst" transform="translate(138,656) scale(1.1)"/>
+
+        <!-- UFO, flying up-and-left, trailing a spring -->
+        <g transform="translate(1052,478)">
+          <path d="M -34,26 C -20,44 20,44 34,26 C 20,40 -20,40 -34,26 Z" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="1 6" stroke-linecap="round" transform="translate(-46,30) scale(0.9)"/>
+          <path d="M -8,30 C -20,42 -6,50 -14,62 C -22,74 -4,72 -10,84" fill="none" stroke="#fff" stroke-width="2.2" stroke-dasharray="1 7" stroke-linecap="round"/>
+          <ellipse cx="0" cy="9" rx="48" ry="9" fill="#8b7fd1" stroke="#1c1d21" stroke-width="2"/>
+          <ellipse cx="0" cy="0" rx="62" ry="15" fill="#2fd9c4" stroke="#1c1d21" stroke-width="2.6"/>
+          <path d="M -30,-8 C -24,-30 24,-30 30,-8 Z" fill="#eef0f2" stroke="#1c1d21" stroke-width="2.6"/>
+          <line x1="4" y1="-30" x2="4" y2="-42" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="4" cy="-44" r="3" fill="#fff"/>
+          <circle cx="-14" cy="-10" r="5.5" fill="#2a1c3d" stroke="#fff" stroke-width="1.6"/>
+          <circle cx="0" cy="-11" r="5.5" fill="#2a1c3d" stroke="#fff" stroke-width="1.6"/>
+          <circle cx="14" cy="-10" r="5.5" fill="#2a1c3d" stroke="#fff" stroke-width="1.6"/>
+        </g>
+        <use href="#spark" transform="translate(1201,507) scale(0.4)" fill="#fff"/>
+      </svg>
+
+      <div class="welcome-content">
+        <h2>Odoo.sh<br>Masterclass</h2>
+        <p class="lead">Day 2 — Platform, workflow, testing, performance &amp; upgrades<br>Stanislas · Odoo Experience 2026 · Brussels</p>
+      </div>
+    </section>
+
+    <!-- ==================== ACT 1 · INTRO & DEPLOYMENT LANDSCAPE ==================== -->
+
+    <section class="divider" style="--act-color: var(--accent);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 1 of 10</p>
+        <h2>Intro &amp; the <mark class="u c-accent">deployment landscape</mark></h2>
+        <p class="lead">Logistics, getting started, and where Odoo.sh sits among Odoo Online and On-Premise.</p>
+        <div class="prog"><span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Logistics</p>
+        <h2>Before we <mark class="u c-accent">start</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Shared pad</span><span><code>pad.odoo.com/p/oxp26-masterlass-odoo-sh</code><br>Questions, links, troubleshooting notes for the day</span></li>
+          <li><span class="key">Schedule</span><span>09:00 start<br/>10:30 short break<br/>12:00 - 13:00 lunch<br/>15:00 short break<br/>17:00 end</span></li>
+          <li><span class="key">Stuck?</span><span>Ask anytime, for generic questions, drop it on the pad</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Today</p>
+        <h2><mark class="u c-accent">Agenda</mark></h2>
+      </header>
+      <div class="slide-body two-col even">
+        <div>
+          <span class="label">Morning</span>
+          <ul class="notes">
+            <li>Exercise 1 — Deploy production</li>
+            <li>Exercise 2 — New module and deploy</li>
+            <li>Exercise 3 — Add new field and deploy (computed)</li>
+          </ul>
+        </div>
+        <div>
+          <span class="label">Afternoon</span>
+          <ul class="notes">
+            <li>Exercise 4 — Secrets in production</li>
+            <li>Exercise 5 — Performance</li>
+            <li>Exercise 6 — Diagnose the graph</li>
+            <li>Exercise 7 — Upgrade</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Where Odoo.sh fits</p>
+        <h2>Three ways to <mark class="u c-accent">run Odoo</mark></h2>
+        <p class="lead">Same product, three different ways to run it — the difference is who manages what, and how much control you get in exchange.</p>
+      </header>
+      <div class="slide-body">
+        <ul class="rows boxes">
+          <li><h3>Odoo Online</h3><p>Odoo's own SaaS, fully hosted and managed.</p></li>
+          <li><h3>On-Premise</h3><p>Self-hosted — you own the infrastructure (Day 1).</p></li>
+          <li><h3>Odoo.sh</h3><p>Odoo's PaaS: managed infrastructure + full code access, git-driven.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Option 1</p>
+        <h2>Odoo <mark class="u c-accent">Online</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">What you get</span><span>An instance, duplicate, backups.</span></li>
+          <li><span class="key">Customization</span><span>Studio, configuration, and importable apps (data file only) — no server/shell/database access.</span></li>
+          <li><span class="key">Upgrades</span><span>Automatic.</span></li>
+          <li><span class="key">Best fit</span><span>Standard business needs, no custom development, minimal IT involvement.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Option 2</p>
+        <h2><mark class="u c-accent">On-Premise</mark> (Day 1)</h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Ownership</span><span>You own the full stack: os, nginx, postgres, workers, filestore, backups.</span></li>
+          <li><span class="key">Freedom</span><span>Any custom code, any infrastructure choice, any deployment pipeline you build yourself.</span></li>
+          <li><span class="key">The cost of that freedom</span><span>You're responsible for everything Day 1 covered: deployment, security, tuning, monitoring, backup strategy, ...</span></li>
+          <li><span class="key">Best fit</span><span>Specific infra/compliance requirements, existing ops team, full control needed.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Option 3 — today's subject</p>
+        <h2><mark class="u c-accent">Odoo.sh</mark></h2>
+        <p class="lead">A PaaS built specifically for developers running custom code — but still a <strong>managed</strong> solution, not just "a VM with git on it".</p>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Managed infra</span><span>Workers, nginx, postgres, backups — same concerns as On-Premise, but Odoo operates them for you.</span></li>
+          <li><span class="key">Full code access</span><span>Git branches, automatic builds, automated tests, staging environments, one-click restore.</span></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p class="k">On-Premise's flexibility, Odoo Online's operational simplicity.</p>
+      </footer>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Odoo.sh, concretely</p>
+        <h2>What "<mark class="u c-accent">managed</mark>" means day to day</h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Security updates</span><span>OS/system-level package updates are applied automatically — nothing to patch yourself.</span></li>
+          <li><span class="key">Standard Odoo code</span><span>Core + Enterprise updated automatically weekly — latest bugfixes/security fixes, no action needed.</span></li>
+          <li><span class="key">PostgreSQL</span><span>Pre-configured for the platform, not user-tunable — no <code>postgresql.conf</code> access, no extensions (PostGIS, ltree…).</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>Side-by-side <mark class="u c-accent">comparison</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows table" style="--cols: 1.15fr 1fr 1.15fr 1fr;">
+          <li class="head"><span>Dimension</span><span>Odoo Online</span><span>Odoo.sh</span><span>On-Premise</span></li>
+          <li><span>Hosting / infra management</span><span>Odoo</span><span>Odoo (managed)</span><span>You</span></li>
+          <li><span>Custom code</span><span class="quiet">❌</span><span>Full</span><span>Full</span></li>
+          <li><span>PostgreSQL configuration</span><span class="quiet">N/A</span><span>Pre-configured, not user-modifiable</span><span>Fully yours to tune</span></li>
+          <li><span>Security (OS) updates</span><span>Automatic</span><span>Automatic</span><span>Your responsibility</span></li>
+          <li><span>Standard Odoo code updates</span><span>Automatic, continuous</span><span>Automatic, every Monday</span><span>Manual, you choose when</span></li>
+          <li><span>Git-driven deployment</span><span class="quiet">❌</span><span>Yes (branches → builds)</span><span class="quiet">Only if you build it</span></li>
+          <li><span>Staging environments</span><span class="quiet">❌</span><span>Yes, built-in</span><span class="quiet">Only if you build it</span></li>
+          <li><span>Automated tests on deploy</span><span class="quiet">❌</span><span>Yes</span><span class="quiet">Only if you build it</span></li>
+          <li><span>Backups &amp; restore</span><span>✅</span><span>Prod: automatic, 1-click restore. Staging: manual only</span><span>You</span></li>
+          <li><span>Scaling</span><span>✅</span><span>Managed (plan-based)</span><span>You</span></li>
+          <li><span>Odoo upgrades</span><span>Automatic</span><span>Assisted (Upgrade Platform + your scripts)</span><span>Manual, your responsibility</span></li>
+          <li><span>Audience</span><span>Standard business use</span><span>Developers/integrators with custom needs</span><span>Ops teams, specific infra needs</span></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p>Checked against odoo.sh/features, odoo.sh/pricing, odoo.sh/faq and the official documentation, 2026-09-21.</p>
+      </footer>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>When to <mark class="u c-accent">choose</mark> which</h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">No custom code, fully hands-off</span><span>Odoo Online</span></li>
+          <li><span class="key">Custom code, managed infra + CI/CD + staging</span><span>Odoo.sh</span></li>
+          <li><span class="key">Full infra control, compliance/on-site requirements</span><span>On-Premise</span></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p class="k">Today is entirely about the middle column.</p>
+      </footer>
+    </section>
+
+    <!-- ==================== ACT 2 · PLATFORM OVERVIEW & BRANCHES ==================== -->
+
+    <section class="divider" style="--act-color: var(--pink);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 2 of 10</p>
+        <h2>Platform overview &amp; <mark class="u c-pink">branches</mark></h2>
+        <p class="lead">Branches, builds, workers, hosting tiers, the major-version upgrade flow.</p>
+        <div class="prog"><span></span><span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">The big picture</p>
+        <h2>Dev flow on <mark class="u c-pink">Odoo.sh</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Flow</span><span>Dev branch → staging → production.</span></li>
+          <li><span class="key">Branches</span><span>Handle the stage, rebuilt on every push.</span></li>
+          <li><span class="key">Build</span><span>The unit of work. A build = container + database + code.</span></li>
+          <li><span class="key">Git-driven</span><span>Push triggers a build, tests run automatically. Promotion between branch types is explicit, not automatic.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2><mark class="u c-pink">Branches</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Development</span><span>One per feature/fix, disposable, fresh demo database on every rebuild.</span></li>
+          <li><span class="key">Staging</span><span>Tracks a dev branch's code, runs against a neutralized copy of production data.</span></li>
+          <li><span class="key">Production</span><span>The one branch actually serving real users — nothing reaches it without an explicit merge/promotion.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2><mark class="u c-pink">Builds</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Machine</span><span>A specific machine is set with everything you need to run the chosen odoo version.</span></li>
+          <li><span class="key">Code</span><span>The standard code depending odoo version and your custom code. Can be modified on dev and staging builds</span></li>
+          <li><span class="key">Filesystem</span><span>The container of your specific build</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <!-- <p class="eyebrow">Day 1 recap, extended</p> -->
+        <h2>Workers: <mark class="u c-pink">two models</mark></h2>
+      </header>
+      <div class="slide-body two-col even">
+        <div>
+          <span class="label">On-Premise / Odoo Online</span>
+          <ul class="notes">
+            <li><code>--workers=N</code> pre-forks N single-threaded processes.</li>
+            <li>1 worker = 1 request at a time.</li>
+            <li>Plus separate dedicated cron and longpolling workers.</li>
+          </ul>
+        </div>
+        <div>
+          <span class="label">Odoo.sh</span>
+          <ul class="notes">
+            <li>Each "worker" is a complete, independent <code>odoo-bin</code> process, running <strong>multi-threaded</strong>.</li>
+            <li>1 worker = several requests at once, by itself.</li>
+            <li>Scaling = more independent processes, routed by the platform's own layer.</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="slide-foot">
+        <p>Same word, different architecture — keep this model in mind for the rest of the day.</p>
+      </footer>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>Workers: what you can actually <mark class="u c-pink">scale</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Configurable</span><span>Only the production branch's worker count.</span></li>
+          <li><span class="key">Staging / dev</span><span>Always capped at a single worker, on any hosting tier.</span></li>
+          <li><span class="key">More workers ≠ faster</span><span>Only increases concurrent connections. If operations remain slow, the issue is likely code-related.</span></li>
+          <li><span class="key">Crons and emails</span><span>1 dedicated worker, also multithreaded.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2><mark class="u c-pink">Backups</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Production backups</span><span>Automatic daily (7 daily + 4 weekly + 3 monthly).</span></li>
+          <li><span class="key">Replicated</span><span>3 different machines in different data centers in Europe and Canada.</span></li>
+          <li><span class="key">Staging backups</span><span>Manual only, kept 3 days, max 5/day.</span></li>
+          <li><span class="key">Development backups</span><span>None.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2><mark class="u c-pink">Tooling</mark></h2>
+        <p class="lead">What's available inside every build, dev to production.</p>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Webshell & editor</span><span>Access to the container in a shell or with an editor.</span></li>
+          <li><span class="key">SSH</span><span>ssh access</span></li>
+          <li><span class="key">Monitoring</span><span>Monitor the state of your container and build (memory, cpu, storage, etc...) - only for production and staging</span></li>
+          <li><span class="key">Log viewer</span><span>Allow to check the logs <code>install.log</code>, <code>update.log</code>, <code>odoo.log</code>.</span></li>
+          <li><span class="key">Profiler</span><span>Allow to create a flamegraph.</span></li>
+          <li><span class="key">Audit logs</span><span>Tracking of users actions (project level).</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>Access <mark class="u c-pink">rights</mark></h2>
+        <p class="lead">Mimics the three stages of branches.</p>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Admin</span><span>Production and project settings, and staging and dev environments.</span></li>
+          <li><span class="key">Tester</span><span>Access to both staging and dev environments.</span></li>
+          <li><span class="key">Developer</span><span>Dev builds.</span></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p><span class="k">More info</span><code>odoo.com/documentation/master/administration/odoo_sh/getting_started/settings.html</code></p>
+      </footer>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>Hosting types: shared vs. <mark class="u c-pink">dedicated</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Shared hosting</span><span>Multiple customers on the same server, fully isolated from other customers.</span></li>
+          <li><span class="key">Dedicated hosting</span><span>Your environment runs alone, fully isolated from other customers.</span></li>
+          <li><span class="key">Worker range</span><span>Shared: 1-8 workers self-service. Beyond 8 → dedicated hosting.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Not the weekly thing</p>
+        <h2>Major version upgrades — <mark class="u c-pink">the process</mark></h2>
+        <p class="lead">Changing <strong>version</strong> (e.g. 17.0 → 19.0) is not automatic.</p>
+      </header>
+      <div class="slide-body">
+        <ul class="notes">
+          <li>Integration with the upgrade platform.</li>
+          <li>Upgrade of last daily backup on staging.</li>
+          <li>Iteration on staging for code specific issue.</li>
+          <li>Upgrade on production triggered on git push.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ==================== ACT 3 · PLATFORM TOUR ==================== -->
+
+    <section class="divider" style="--act-color: var(--cyan);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 3 of 10</p>
+        <h2>Platform <mark class="u c-cyan">tour</mark></h2>
+        <p class="lead">Live demo</p>
+        <div class="prog"><span></span><span></span><span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <!-- ==================== ACT 4 · THE DEVELOPMENT WORKFLOW ==================== -->
+
+    <section class="divider" style="--act-color: var(--yellow);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 4 of 10</p>
+        <h2>The development <mark class="u c-yellow">workflow</mark></h2>
+        <p class="lead">Push → rebuild → test — and what actually survives a rebuild.</p>
+        <div class="prog"><span></span><span></span><span></span><span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Before anything else</p>
+        <h2>Fork the <mark class="u c-yellow">repository</mark></h2>
+        <p class="lead">The first concrete action of the day — start this now, in parallel with the talk.</p>
+      </header>
+      <div class="slide-body">
+        <ul class="rows numbered">
+          <li><span class="num">1</span><h3>Fork <code>github.com/sts-odoo/oxp26-masterclass-odoosh</code></h3><p>To your own GitHub account.</p></li>
+          <li><span class="num">2</span><h3>Create your own Odoo.sh project</h3><p>From that fork — this is what gives you isolated branches, builds and databases for today.</p></li>
+          <li><span class="num">3</span><h3>Provisioning takes a few minutes</h3><p>No reason to wait for a break — get it started now.</p></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p><span class="k">🏋 Exercise 1</span></p>
+      </footer>
+    </section>
+
+
+    <section>
+      <header class="slide-head">
+        <h2>The development <mark class="u c-yellow">workflow</mark></h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Lifecycle</span><span>Edit code → push → Odoo.sh rebuilds → test on the running build.</span></li>
+          <li><span class="key">Data</span><span>Demo data, not real data — a dev branch's database is generated fresh on every rebuild.</span></li>
+          <li><span class="key">Shell & Editor</span><span><code>odoo-bin shell</code> / direct psql for real work; the online editor for quick, visible edits.</span></li>
+          <li><span class="key"><code>requirements.txt</code></span><span>The one way to add Python dependencies that actually survives a rebuild.</span></li>
+          <li><span class="key">Dev DB lifespan</span><span>No backups at all, ~3 days before it can be garbage-collected — never park anything you care about there.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>Getting into <mark class="u c-yellow">staging</mark></h2>
+        <p class="lead">When the code is good, two ways to get it there.</p>
+      </header>
+      <div class="slide-body">
+        <ul class="rows numbered">
+          <li><span class="num">1</span><h3>Promote the branch itself</h3><p>Flip this dev branch's stage to Staging directly — same code, rebuilt against production data instead of demo data.</p></li>
+          <li><span class="num">2</span><h3>Merge into a dedicated staging branch</h3><p>For a shared integration branch several developers' work lands on before production.</p></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p><span class="k">🏋 Exercise 2</span></p>
+      </footer>
+    </section>
+
+    <!-- ==================== ACT 5 · TESTS & CI ==================== -->
+
+    <section class="divider" style="--act-color: var(--lavender);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 5 of 10</p>
+        <h2><mark class="u c-lavender">Tests &amp; CI</mark> on Odoo.sh</h2>
+        <p class="lead">Every push runs the test suite automatically — no CI system to wire up.</p>
+        <div class="prog"><span></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2><mark class="u c-lavender">Tests &amp; CI</mark> on Odoo.sh</h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">Automatic</span><span>Every push, on every branch, runs the module's test suite — no separate CI system to wire up.</span></li>
+          <li><span class="key">Build badge</span><span>Green = tests passed, red = something failed.</span></li>
+          <li><span class="key">See why</span><span>The build's log tab has the full test output.</span></li>
+        </ul>
+<pre><code>odoo-bin -u conference_session --test-tags /conference_session --stop-after-init --no-http</code></pre>
+      </div>
+      <footer class="slide-foot">
+        <p><span class="k">🏋 Exercise 3</span></p>
+      </footer>
+    </section>
+
+    <!-- ==================== ACT 6 · STAGING & THE PATH TO PRODUCTION ==================== -->
+
+    <section class="divider" style="--act-color: var(--accent);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 6 of 10</p>
+        <h2>Staging &amp; the path to <mark class="u c-accent">production</mark></h2>
+        <p class="lead">Neutralized production data, the merge flow, and what Odoo.sh does and doesn't validate.</p>
+        <div class="prog"><span></span><span></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>Staging = <mark class="u c-accent">neutralized</mark> production data</h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows wide-key">
+          <li><span class="key">What staging is</span><span>Same code as the branch it tracks, a <strong>neutralized</strong> copy of production data.</span></li>
+          <li><span class="key">Standard Odoo</span><span>Every Odoo.sh staging/dev database is neutralized — the same mechanism used for upgrade testing and backup restores everywhere.</span></li>
+          <li><span class="key">Deactivates</span><span>Scheduled actions, outgoing emails, bank sync, payment providers, delivery methods, IAP tokens, website SEO visibility.</span></li>
+          <li><span class="key">On screen</span><span>A red banner marks a neutralized database, so it's never mistaken for production.</span></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p>Staging databases are auto-deleted after ~1 month of inactivity — rebuild the branch for a fresh one.</p>
+      </footer>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>How <mark class="u c-accent">neutralization</mark> actually works</h2>
+      </header>
+      <div class="slide-body">
+        <ul class="rows numbered">
+          <li><span class="num">1</span><h3>Any installed module can ship it</h3><p>A <code>data/neutralize.sql</code> file — <code>base</code>, <code>mail</code>, <code>payment</code> already do, for the items on the previous slide.</p></li>
+          <li><span class="num">2</span><h3>The platform runs them automatically</h3><p>Every installed module's <code>data/neutralize.sql</code>, whenever it neutralizes a database.</p></li>
+          <li><span class="num">3</span><h3>A custom secret isn't covered</h3><p>It's just data no core module knows to touch — that's exactly the gap Exercise 4 is about.</p></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p><span class="k">🏋 Exercise 4</span></p>
+      </footer>
+    </section>
+
+    <!-- ==================== ACT 7 · PERFORMANCE DEBUGGING ==================== -->
+
+    <section class="divider" style="--act-color: var(--pink);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 7 of 10</p>
+        <h2>Performance <mark class="u c-pink">debugging</mark></h2>
+        <p class="lead">From a slow list view, to a flamegraph, to a one-line fix.</p>
+        <div class="prog"><span></span><span></span><span></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>Performance <mark class="u c-pink">debugging</mark></h2>
+        <p class="lead">Ships with only 4 demo records — not enough to feel any slowness.</p>
+      </header>
+      <div class="slide-body two-col">
+        <div>
+          <span class="label">Setup</span>
+          <br/>
+          <br/>
+          <pre><code>odoo-bin populate --size=large --models=conference.session \
+  -d $PGDATABASE --stop-after-init --no-http</code></pre>
+        </div>
+        <div>
+          <span class="label">Reading a flamegraph</span>
+          <ul class="rows wide-key">
+            <li><span class="key">Wide flat bar</span><span>One slow function.</span></li>
+          </ul>
+        </div>
+      </div>
+      <footer class="slide-foot">
+        <p><span class="k">🏋 Exercise 5</span></p>
+      </footer>
+    </section>
+
+    <!-- ==================== ACT 8 · DIAGNOSE THE GRAPH ==================== -->
+
+    <section class="divider" style="--act-color: var(--cyan);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 8 of 10</p>
+        <h2>Diagnose the <mark class="u c-cyan">graph</mark></h2>
+        <p class="lead">Zoomed all the way out: no code, no flamegraph — just Odoo.sh's own monitoring graphs.</p>
+        <div class="prog"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2>Diagnosing the <mark class="u c-cyan">monitoring</mark></h2>
+        <p class="lead">Each graph tells a story.</p>
+      </header>
+      <div class="slide-body">
+        <figure class="shot">
+          <img src="images/monitoring-example.png" alt="Odoo.sh build monitoring: Memory, CPU, IOPS, and Storage graphs over the last two days">
+        </figure>
+      </div>
+      <footer class="slide-foot">
+        <p><span class="k">🏋 Exercise 6</span></p>
+      </footer>
+    </section>
+
+    <!-- ==================== ACT 9 · UPGRADE ON ODOO.SH ==================== -->
+
+    <section class="divider" style="--act-color: var(--yellow);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 9 of 10</p>
+        <h2><mark class="u c-yellow">Upgrade</mark> on Odoo.sh</h2>
+        <p class="lead">The module-specific part: why <code>pre_migration.py</code> vs. <code>post_migration.py</code>.</p>
+        <div class="prog"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="on"></span><span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <p class="eyebrow">Not the weekly thing</p>
+        <h2>Major version upgrades — <mark class="u c-yellow">the process</mark></h2>
+        <p class="lead">Changing <strong>version</strong> (e.g. 17.0 → 19.0) is not automatic.</p>
+      </header>
+      <div class="slide-body">
+        <ul class="rows numbered">
+          <li><span class="num">1</span><h3>Request a test upgrade</h3><p>Odoo.sh sends your latest production backup to the Upgrade Platform.</p></li>
+          <li><span class="num">2</span><h3>Staging enters "upgrade mode"</h3><p>Every push restores the upgraded backup and updates your custom modules.</p></li>
+          <li><span class="num">3</span><h3>Test, fix, repeat</h3><p>Fix your custom module code for the new version, as needed.</p></li>
+          <li><span class="num">4</span><h3>Explicitly request the production upgrade</h3><p>A separate, deliberate action — not a side effect of a green staging test.</p></li>
+          <li><span class="num">5</span><h3>Triggered by a commit to production</h3><p>Synchronizes the DB upgrade with your upgraded custom code.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <header class="slide-head">
+        <h2><mark class="u c-yellow">Upgrade</mark> on Odoo.sh</h2>
+        <p class="lead">Request test → staging upgrade mode → test → request production → downtime.</p>
+      </header>
+      <div class="slide-body">
+        <ul class="rows table" style="--cols: 1.7fr 1fr;">
+          <li class="head"><span>Field change</span><span>Migration script</span></li>
+          <li><span><code>speaker</code> (Char) → <code>presenter_id</code> (Many2one)</span><span><code>post_migration.py</code></span></li>
+          <li><span><code>duration</code> (Integer, minutes) → <code>duration</code> (Float, hours)</span><span><code>pre_migration.py</code></span></li>
+        </ul>
+        <ul class="rows wide-key">
+          <li><span class="key">Why pre vs. post</span><span>Pre runs before the ORM touches the schema (raw SQL only, old columns/tables still exist). Post runs after (new fields exist via the ORM, but start empty).</span></li>
+        </ul>
+      </div>
+      <footer class="slide-foot">
+        <p><span class="k">🏋 Exercise 7</span></p>
+      </footer>
+    </section>
+
+    <!-- ==================== ACT 10 · WRAP-UP & Q&A ==================== -->
+
+    <section class="divider" style="--act-color: var(--lavender);">
+      <div class="divider-body">
+        <p class="eyebrow">Act 10 of 10</p>
+        <h2><mark class="u c-lavender">Wrap-up</mark> &amp; Q&amp;A</h2>
+        <div class="prog"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="on"></span></div>
+      </div>
+    </section>
+
+    <section class="statement">
+      <header class="slide-head">
+        <p class="eyebrow">What Odoo.sh still doesn't do for you</p>
+        <h2>Tools, not <mark class="u c-lavender">discipline</mark></h2>
+        <p class="lead">Code quality, test coverage, downtime planning — the platform gives you the tools, not the discipline.</p>
+      </header>
+      <footer class="slide-foot">
+        <p><span class="k">Questions?</span><code>pad.odoo.com/p/oxp26-masterlass-odoo-sh</code></p>
+      </footer>
+    </section>
+
+  </div>
+</div>
+
+<script src="../reveal/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2,
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    hash: true,
+    transition: 'slide',
+    backgroundTransition: 'fade'
+  });
+
+  var toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', function () {
+    var root = document.documentElement;
+    var current = root.dataset.theme ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('deck-theme', next); } catch (err) {}
+  });
+</script>
+
+</body>
+</html>
